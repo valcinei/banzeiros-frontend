@@ -8,13 +8,13 @@
         <div class="search-content">
           <form @submit.prevent="searchBoats()">
             <div class="row">
-              <!-- <b-input-group>
+              <b-input-group @click="searchBoats()">
                 <b-form-input v-model="query" type="text"></b-form-input>
 
                 <b-input-group-append>
                   <b-button variant="outline-secondary">Buscar</b-button>
                 </b-input-group-append>
-              </b-input-group> -->
+              </b-input-group>
             </div>
           </form>
         </div>
@@ -145,11 +145,11 @@ export default {
         .toString(36)
         .substring(7);
     },
-    searchBoats() {
+    async searchBoats() {
       if (!this.query) return;
-      this.boatList = this.boatList.filter(item => {
-        return item.name.toUpperCase().includes(this.query.toUpperCase());
-      });
+     const res = await Api.get("boats/query="+this.query);
+      this.boatList = res.data;
+
     },
     async getBoats() {
       const res = await Api.get("boats");
